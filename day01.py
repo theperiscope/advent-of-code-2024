@@ -23,7 +23,7 @@ list3 = [abs(x - y) for x, y in zip(list2, list1)]
 
 # sum list3
 part1 = sum(list3)
-print("part1", part1)
+print("Part 1", part1)
 
 # how many times each number appears in list2
 # https://docs.python.org/3/library/collections.html#collections.Counter
@@ -31,4 +31,4 @@ counter = Counter(list2)
 
 # sum of n * counter[n] for n in list1
 part2 = sum(n * counter[n] for n in list1)
-print("part2", part2)
+print("Part 2", part2)

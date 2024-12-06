@@ -24,5 +24,5 @@ for matchNum, match in enumerate(matches, start=1):
     part1 += a * b
     part2 += a * b if doMul else 0
 
-print("part1", part1)
-print("part2", part2)
+print("Part 1", part1)
+print("Part 2", part2)

@@ -28,5 +28,5 @@ for line in lines:
     part1 += 1 if safe else 0
     part2 += 1 if safe or new_safe else 0
 
-print("part1", part1)
-print("part2", part2)
+print("Part 1", part1)
+print("Part 2", part2)
