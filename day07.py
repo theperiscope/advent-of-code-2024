@@ -1,4 +1,5 @@
 from itertools import product
+import math
 
 
 def read_file(filename):
@@ -16,12 +17,17 @@ def read_file(filename):
 
 def concatenate_numbers(a, b):
     # shorter version: return f"{a}{b}" but this avoids using string ops
-    num_digits = 0
-    x = b
-    while x > 0:
-        x //= 10
-        num_digits += 1
-    return a * (10**num_digits) + b
+    # --
+    # no string ops version
+    # num_digits = 0
+    # x = b
+    # while x > 0:
+    #     x //= 10
+    #     num_digits += 1
+    # return a * (10**num_digits) + b
+    # --
+    # interesting: log10-based version of counting digits
+    return a * (10 ** (math.floor(math.log10(b)) + 1)) + b
 
 
 def check(target, numbers, include_concat=False):
