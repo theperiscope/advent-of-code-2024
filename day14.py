@@ -78,21 +78,38 @@ print("Part 2:", part2)
 
 
 # interesting: Github Copilot suggested this function to save the board as a .png image
-def save_board_as_image(board, filename, scale_factor=5):
-    height = len(board)
-    width = len(board[0])
-    image = Image.new("RGBA", (width * scale_factor, height * scale_factor), (255, 255, 255, 0))
+def save_board_as_image(board, filename):
+    height, width, transparent, red, green = len(board), len(board[0]), (255, 255, 255, 0), (255, 58, 47, 255), (12, 176, 74, 255)
+    image = Image.new("RGBA", (width * 10, height * 10), transparent)
     pixels = image.load()
+
+    # interesting: circle pattern tool https://donatstudios.com/PixelCircleGenerator
+    def draw_circle(pixels, cx, cy, color):
+        pattern = [
+            "...####...",
+            ".########.",
+            ".########.",
+            "##########",
+            "##########",
+            "##########",
+            "##########",
+            ".########.",
+            ".########.",
+            "...####...",
+        ]
+        for py in range(10):
+            for px in range(10):
+                if pattern[py][px] == "#":
+                    px_scaled = cx + px - 5
+                    py_scaled = cy + py - 5
+                    if 0 <= px_scaled < width * 10 and 0 <= py_scaled < height * 10:
+                        pixels[px_scaled, py_scaled] = color
 
     for y in range(height):
         for x in range(width):
             if board[y][x] == "#":
-                color = random.choice([(128, 0, 0, 255), (0, 128, 0, 255)])  # Red or Green with full opacity
-            else:
-                color = (255, 255, 255, 0)  # Transparent
-            for dy in range(scale_factor):
-                for dx in range(scale_factor):
-                    pixels[x * scale_factor + dx, y * scale_factor + dy] = color
+                color = random.choice([red, green])
+                draw_circle(pixels, x * 10 + 10 // 2, y * 10 + 10 // 2, color)
 
     image.save(filename)
 
