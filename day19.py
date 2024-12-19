@@ -1,7 +1,13 @@
+from functools import cache
+
+
 def read_file(filename):
     with open(filename, "r") as f:
         content = f.read().strip().split("\n\n")
     return content[0].split(", "), content[1].split("\n")
+
+
+towel_patterns, desired_designs = read_file("day19.txt")  # similar to chunk & words
 
 
 def is_possible(desired_design, memoize=None):
@@ -19,10 +25,17 @@ def is_possible(desired_design, memoize=None):
     return memoize[desired_design]
 
 
-towel_patterns, desired_designs = read_file("day19.txt")  # similar to chunk & words
+@cache  # interesting: equivalent to memoization, https://docs.python.org/3/library/functools.html#functools.cache
+def is_possible_2(desired_design):
+    return len(desired_design) == 0 or sum(
+        is_possible_2(desired_design.removeprefix(p)) for p in towel_patterns if desired_design.startswith(p)
+    )
+
 
 part1 = sum(1 for d in desired_designs if is_possible(d) > 0)
-print(f"Part 1: {part1}")
+part1a = sum(1 for d in desired_designs if is_possible_2(d) > 0)
+print("Part 1:", part1, part1a)
 
 part2 = sum(is_possible(d) for d in desired_designs)
-print(f"Part 2: {part2}")
+part2a = sum(is_possible_2(d) for d in desired_designs)
+print("Part 2:", part2, part2a)
