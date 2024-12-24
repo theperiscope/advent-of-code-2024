@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+import time
 import os
 import urllib.request
 import urllib.error
@@ -55,6 +56,13 @@ class AocInput:
 
 if __name__ == "__main__":
     aoc = AocInput()
-    now = datetime.now()
+    utc = datetime.now(timezone.utc)
+    # Use time.localtime() to properly detect DST for Eastern Time
+    is_dst = time.localtime().tm_isdst > 0
+    # Adjust offset based on DST
+    offset = -4 if is_dst else -5
+    # Convert UTC to Eastern with correct offset
+    now = utc.astimezone(timezone(timedelta(hours=offset)))
+    print("Now", now)
     input_text = aoc.get_input(now.year, now.day)  # assuming we are running it in December
     print(input_text)
