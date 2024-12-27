@@ -43,7 +43,7 @@ def part1(wires):
 # inspired by well-documented code from https://github.com/xhyrom/aoc/blob/main/2024/24/part_2.py
 def find_output_wire(left, right, operation, gates):
     for op, a, b, output in gates:
-        if {a, b} == {left, right} and op == operation:
+        if {a, b} == {left, right} and op == operation:  # interesting: set comparison for unordered equality
             return output
     return None
 
