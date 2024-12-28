@@ -84,26 +84,22 @@ def full_adder_logic(x, y, c0, gates, swapped):
         r1 = find_output_wire(c0, m1, "AND", gates)  # C0 AND M1 -> R1 (carry for intermediate sum)
         if not r1:
             n1, m1 = m1, n1
-            swapped.append(m1)
-            swapped.append(n1)
+            swapped.extend([m1, n1])
             r1 = find_output_wire(c0, m1, "AND", gates)
 
         z1 = find_output_wire(c0, m1, "XOR", gates)  # C0 XOR M1 -> Z1 (final sum)
 
         if m1 and m1.startswith("z"):
             m1, z1 = z1, m1
-            swapped.append(m1)
-            swapped.append(z1)
+            swapped.extend([m1, z1])
 
         if n1 and n1.startswith("z"):
             n1, z1 = z1, n1
-            swapped.append(n1)
-            swapped.append(z1)
+            swapped.extend([n1, z1])
 
         if r1 and r1.startswith("z"):
             r1, z1 = z1, r1
-            swapped.append(r1)
-            swapped.append(z1)
+            swapped.extend([r1, z1])
 
         c1 = find_output_wire(r1, n1, "OR", gates)  # R1 OR N1 -> C1 (final carry)
     else:
@@ -119,10 +115,7 @@ def part2(gates, wires):
 
     bits = len([wire for wire in wires if wire.startswith("x")])
     for i in range(bits):
-        n = str(i).zfill(2)
-        x = f"x{n}"
-        y = f"y{n}"
-
+        x, y = f"x{i:02}", f"y{i:02}"
         z1, c1 = full_adder_logic(x, y, c0, gates, swapped)
 
         if c1 and c1.startswith("z") and c1 != "z45":
